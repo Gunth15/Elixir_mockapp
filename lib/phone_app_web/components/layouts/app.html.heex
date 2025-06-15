@@ -1,0 +1,43 @@
+<div class="fixed inset-y-0 flex w-96 flex-col p-2 lg:p-8 bg-gray-100 border-r">
+  <div class="rounded-lg flex flex-grow flex-col border border-gray-200 bg-white pt-5 px-4 pb-4 overflow-hidden">
+    <h1 class="text-2xl font-semibold flex items-center">
+      <.link href={~p(/messages)} class="flex-grow">Your Conversations</.link>
+      <.link href={~p(/messages/new)} class="px-2">➕</.link>
+    </h1>
+
+    <div :if={assigns[:conversation_list]} class="mt-4 overflow-y-auto overscroll-contain">
+      <%= if @conversation_list == [] do %>
+        <p class="italic">Nothing here, yet</p>
+      <% else %>
+        <ul>
+          <%= for %{contact: contact, messages: [message]} <- @conversation_list do %>
+            <li>
+              <.link href={~p(/messages/#{contact.id})}>
+                <div class="font-semibold"><%= contact.name || contact.phone_number %></div>
+                <div><%= message.body %></div>
+              </.link>
+            </li>
+
+            <hr class="border-t pt-4 mt-4" />
+          <% end %>
+        </ul>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="pl-96">
+  <div class="mx-auto flex max-w-4xl flex-col md:px-8 xl:px-0">
+    <main class="flex-1">
+      <div class="px-4 sm:px-6 md:px-0">
+        <%= if @flash["error"] do %>
+          <p class="p-4 my-4 bg-red-50 text-red-900 border border-red-200 rounded" role="alert">
+            <%= @flash["error"] %>
+          </p>
+        <% end %>
+
+        <%= @inner_content %>
+      </div>
+    </main>
+  </div>
+</div>

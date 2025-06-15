@@ -1,0 +1,21 @@
+<.form :let={f} for={@changeset} action={~p(/messages/new)} as={:message} class="relative">
+  <%= if @contact do %>
+    <.input type="hidden" field={f[:to]} value={@contact.phone_number} />
+  <% else %>
+    <.input type="text" field={f[:to]} placeholder="To (Phone Number)" />
+  <% end %>
+
+  <.input type="textarea" field={f[:body]} rows={2} placeholder="Send a message..." />
+
+  <div class="mt-2">
+    <button
+      type="submit"
+      class="inline-flex items-center rounded-md border border-transparent
+                               bg-blue-600 px-4 py-2 text-sm font-medium text-white
+                                 shadow-sm ring-inset hover:bg-blue-700 focus:outline-none
+                                 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+    >
+      Deliver
+    </button>
+  </div>
+</.form>

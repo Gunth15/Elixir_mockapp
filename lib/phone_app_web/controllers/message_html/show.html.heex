@@ -1,0 +1,36 @@
+<div class="py-6 h-screen flex flex-col">
+  <h1 class="text-2xl font-semibold text-gray-900">
+    <%= if @conversation.contact.name do %>
+      To: {@conversation.contact.name} ({@conversation.contact.phone_number})
+    <% else %>
+      To: {@conversation.contact.phone_number}
+    <% end %>
+  </h1>
+
+  <div class="flex-grow max-h-full min-h-0 py-4 w-full max-w-prose mx-auto">
+    <ul class="flex flex-col-reverse pb-4 space-y-4 space-y-reverse h-full overflow-auto overscroll-contain">
+      <li class="w-full">
+        <.message_form changeset={@changeset} contact={@conversation.contact} />
+      </li>
+
+      <li
+        :for={message <- @conversation.messages}
+        class={[
+          "max-w-[80%] border px-2 py-3 shadow-sm rounded",
+          message.direction == :outgoing &&
+            "place-self-end rounded-br-none bg-blue-100 border-blue-200",
+          message.direction != :outgoing &&
+            "place-self-start rounded-bl-none bg-gray-100 border-gray-200"
+        ]}
+      >
+        <div class="whitespace-pre-wrap">{message.body}</div>
+        <div
+          :if={message.status in ["failed", "queued", "undelivered"]}
+          class="text-xs italic text-right"
+        >
+          {message.status}
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
